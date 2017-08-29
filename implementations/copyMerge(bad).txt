@@ -1,0 +1,79 @@
+#include <iostream>
+#include <vector>
+
+std::vector<int> merge(int sorted[], std::vector<int> & left, std::vector<int> & right, int size);
+
+std::vector<int> mergeSort(int sorted[], std::vector<int> & list, int size){
+    if(size <= 1){
+        std::vector<int> result;
+        result.push_back(list.at(0));
+        return result;
+    }
+
+    std::vector<int> left;
+    std::vector<int> right;
+
+    for(int i = 0; i < size/2; ++i){
+        left.push_back(list.at(i));
+    }
+    for(int i = size/2; i < size; ++i){
+        right.push_back(list.at(i));
+    }
+
+    left = mergeSort(sorted, left, size/2);
+    right = mergeSort(sorted, right, (size + 1)/2);
+
+
+    return merge(sorted, left, right, size);
+}
+
+
+std::vector<int> merge(int sorted[], std::vector<int> & left, std::vector<int> & right, int size){
+    std::vector<int> result;
+    int firstIndex = 0;
+    int secondIndex = 0;
+    //while(firstIndex < left.size() && secondIndex < right.size()){
+    for (int i = 0; i < size; i++){
+
+        if(firstIndex >= left.size()){
+            //first half is already pushed
+            while (secondIndex < right.size()){
+                //sorted[i] = (right.at(secondIndex));
+                result.push_back(right.at(secondIndex));
+                secondIndex++;
+            }
+            break;
+        }
+        else if(secondIndex >= right.size()){
+            //second half is already pushed
+            while (firstIndex < left.size()){
+                //sorted[i] = (left.at(firstIndex));
+                result.push_back(left.at(firstIndex));
+                firstIndex++;
+            }
+            break;
+        }
+
+        if(left.at(firstIndex) < right.at(secondIndex)){
+            //sorted[i] = left.at(firstIndex);
+            result.push_back(left.at(firstIndex));
+            firstIndex++;
+        }else{
+            //sorted[i] = right.at(secondIndex);
+            result.push_back(right.at(secondIndex));
+            secondIndex++;
+        }
+    }
+    return result;
+}
+
+
+int main(){
+    std::vector<int> list = {0, 10, 2, 30, 4, 50, 6, 70, 8, 9, -1, 99, -5, 22, 51};
+    int sortedEmpty[list.size()];
+    list = mergeSort(sortedEmpty, list, list.size());
+
+    for (int i = 0; i < list.size(); i++){
+        std::cout << list[i] << " ";
+    }
+}

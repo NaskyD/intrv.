@@ -1,0 +1,19 @@
+void reverse(char * inputString){
+   int size = 0;
+   char temp;
+
+   while(inputString[size] != '\0'){
+       size ++;
+   }
+   size--;
+
+
+   int index = 0;
+   while(size > index){
+       temp = inputString[index];
+       inputString[index] = inputString[size];
+       inputString[size] = temp;
+       index ++;
+       size --;
+   }
+}
